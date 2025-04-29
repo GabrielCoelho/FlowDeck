@@ -28,8 +28,9 @@ public class BoardColumnController {
   @PostMapping
   public ResponseEntity<BoardColumn> createColumn(
       @PathVariable Long boardId, @RequestBody BoardColumn boardColumn) {
-    // A lógica para definir o board deve estar no service
-    return new ResponseEntity<>(boardColumnService.create(boardColumn), HttpStatus.CREATED);
+
+    return new ResponseEntity<>(
+        boardColumnService.create(boardId, boardColumn), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
