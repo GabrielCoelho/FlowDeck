@@ -1,8 +1,10 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.model.Board;
 import br.com.devcoelho.taskboard.model.BoardColumn;
 import br.com.devcoelho.taskboard.model.BoardColumnKind;
 import br.com.devcoelho.taskboard.repository.BoardColumnRepository;
+import br.com.devcoelho.taskboard.repository.BoardRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardColumnService {
 
   private final BoardColumnRepository boardColumnRepository;
+  private final BoardRepository boardRepository;
 
   /** Busca todas as colunas de um board ordenadas */
   public List<BoardColumn> findByBoardId(Long boardId) {
@@ -28,7 +31,14 @@ public class BoardColumnService {
 
   /** Cria uma nova coluna em um board */
   @Transactional
-  public BoardColumn create(BoardColumn boardColumn) {
+  public BoardColumn create(Long boardId, BoardColumn boardColumn) {
+    Board board =
+        boardRepository
+            .findById(boardId)
+            .orElseThrow(() -> new RuntimeException("Board wasn't found with the provided ID"));
+
+    boardColumn.setBoard(board);
+
     // Verifica se é permitido criar mais de uma coluna com o mesmo tipo especial
     if (boardColumn.getKind() != BoardColumnKind.PENDING) {
       boardColumnRepository
