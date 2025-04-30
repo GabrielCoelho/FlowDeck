@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.model.Board;
 import br.com.devcoelho.taskboard.model.BoardColumn;
 import br.com.devcoelho.taskboard.model.BoardColumnKind;
@@ -26,7 +27,7 @@ public class BoardColumnService {
   public BoardColumn findById(Long id) {
     return boardColumnRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("BoardColumn not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("BoardColumn not found with id: ", id));
   }
 
   /** Cria uma nova coluna em um board */

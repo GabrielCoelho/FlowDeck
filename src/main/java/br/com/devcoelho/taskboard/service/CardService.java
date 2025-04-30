@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.model.Board;
 import br.com.devcoelho.taskboard.model.BoardColumn;
 import br.com.devcoelho.taskboard.model.Card;
@@ -43,7 +44,7 @@ public class CardService {
     Board board =
         boardColumnRepository
             .findById(boardId)
-            .orElseThrow(() -> new RuntimeException("Board not found with id: " + boardId))
+            .orElseThrow(() -> new ResourceNotFoundException("Board not found: ", boardId))
             .getBoard();
 
     BoardColumn initialColumn = board.getInitialColumn();

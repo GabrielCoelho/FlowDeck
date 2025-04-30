@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.model.Block;
 import br.com.devcoelho.taskboard.model.Card;
 import br.com.devcoelho.taskboard.repository.BlockRepository;
@@ -26,7 +27,7 @@ public class BlockService {
   public Block findById(Long id) {
     return blockRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Block not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("Block not found with id: ", id));
   }
 
   /** Verifica se um card está bloqueado */
@@ -46,7 +47,7 @@ public class BlockService {
     Card card =
         cardRepository
             .findById(cardId)
-            .orElseThrow(() -> new RuntimeException("Card not found with id: " + cardId));
+            .orElseThrow(() -> new ResourceNotFoundException("Card not found with id: ", cardId));
 
     // Cria o bloqueio
     Block block =
