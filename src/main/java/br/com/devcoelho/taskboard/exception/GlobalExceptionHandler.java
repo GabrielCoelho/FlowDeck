@@ -9,6 +9,20 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+/**
+ * Global exception handler for the FlowDeck application.
+ *
+ * <p>This class provides centralized exception handling across all controllers in the application.
+ * It translates exceptions thrown during request processing into appropriate HTTP responses with
+ * consistent error message formats.
+ *
+ * <p>Each exception type is mapped to a specific HTTP status code and includes detailed information
+ * about the error to help clients understand and address the issue.
+ *
+ * @author Gabriel Coelho Soares
+ * @version 1.0
+ * @since 1.0
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

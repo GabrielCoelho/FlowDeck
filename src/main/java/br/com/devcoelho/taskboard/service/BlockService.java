@@ -29,7 +29,7 @@ public class BlockService {
   public Block findById(Long id) {
     return blockRepository
         .findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Block not found with id: ", id));
+        .orElseThrow(() -> new ResourceNotFoundException("Blocked", id));
   }
 
   /** Verifica se um card está bloqueado */

@@ -2,6 +2,7 @@ package br.com.devcoelho.taskboard.service;
 
 import br.com.devcoelho.taskboard.exception.ColumnContainsCardException;
 import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
+import br.com.devcoelho.taskboard.exception.SpecialColumnDeletionException;
 import br.com.devcoelho.taskboard.exception.SpecialColumnException;
 import br.com.devcoelho.taskboard.model.Board;
 import br.com.devcoelho.taskboard.model.BoardColumn;
@@ -115,7 +116,7 @@ public class BoardColumnService {
 
     // Não permite remover colunas especiais (INITIAL, FINAL, CANCEL)
     if (column.getKind() != BoardColumnKind.PENDING) {
-      throw new RuntimeException("Cannot delete a special column with kind: " + column.getKind());
+      throw new SpecialColumnDeletionException(column.getKind(), column.getId());
     }
 
     // Verifica se a coluna não tem cards

@@ -1,40 +1,31 @@
 package br.com.devcoelho.taskboard.exception;
 
 /**
- * Classe base para todas as exceções específicas do sistema FlowDeck. Estende RuntimeException para
- * manter o comportamento de exceções não-verificadas.
+ * Base exception class for all custom exceptions in the FlowDeck application. Extends
+ * RuntimeException to provide unchecked exception behavior, allowing exceptions to propagate
+ * without explicit handling.
+ *
+ * <p>This class serves as the root of the exception hierarchy for the application, enabling
+ * consistent handling of all FlowDeck-specific exceptions.
+ *
+ * @author Gabriel Coelho Soares
+ * @version 1.0
+ * @since 1.0
  */
 public class FlowDeckException extends RuntimeException {
 
-  /** Construtor padrão. */
   public FlowDeckException() {
     super();
   }
 
-  /**
-   * Construtor com mensagem de erro.
-   *
-   * @param message a mensagem de erro
-   */
   public FlowDeckException(String message) {
     super(message);
   }
 
-  /**
-   * Construtor com mensagem de erro e causa raiz.
-   *
-   * @param message a mensagem de erro
-   * @param cause a causa raiz (exceção original)
-   */
   public FlowDeckException(String message, Throwable cause) {
     super(message, cause);
   }
 
-  /**
-   * Construtor com causa raiz.
-   *
-   * @param cause a causa raiz (exceção original)
-   */
   public FlowDeckException(Throwable cause) {
     super(cause);
   }
