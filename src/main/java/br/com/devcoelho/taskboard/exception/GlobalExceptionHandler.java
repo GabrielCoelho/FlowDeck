@@ -37,88 +37,92 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<Object> handleResourceNotFoundException(Exception ex, WebRequest request) {
+  public ResponseEntity<Object> handleResourceNotFoundException(
+      ResourceNotFoundException ex, WebRequest request) {
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", OffsetDateTime.now());
     body.put("status", HttpStatus.NOT_FOUND.value());
     body.put("error", "Not Found:404");
     body.put("message", ex.getMessage());
 
-    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(BlockedCardException.class)
-  public ResponseEntity<Object> handleBlockedCardException(Exception ex, WebRequest request) {
+  public ResponseEntity<Object> handleBlockedCardException(
+      BlockedCardException ex, WebRequest request) {
 
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", OffsetDateTime.now());
-    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("status", HttpStatus.CONFLICT.value());
     body.put("error", "Bad Request");
     body.put("message", ex.getMessage());
 
-    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(body, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(CardAlreadyBlockedException.class)
   public ResponseEntity<Object> handleCardAlreadyBlockedException(
-      Exception ex, WebRequest request) {
+      CardAlreadyBlockedException ex, WebRequest request) {
 
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", OffsetDateTime.now());
-    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("status", HttpStatus.CONFLICT.value());
     body.put("error", "Bad Request");
     body.put("message", ex.getMessage());
 
-    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(body, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(CardNotBlockedException.class)
-  public ResponseEntity<Object> handleCardNotBlockedException(Exception ex, WebRequest request) {
+  public ResponseEntity<Object> handleCardNotBlockedException(
+      CardNotBlockedException ex, WebRequest request) {
 
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", OffsetDateTime.now());
-    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("status", HttpStatus.CONFLICT.value());
     body.put("error", "Bad Request");
     body.put("message", ex.getMessage());
 
-    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(body, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(SpecialColumnException.class)
-  public ResponseEntity<Object> handleSpecialColumnException(Exception ex, WebRequest request) {
+  public ResponseEntity<Object> handleSpecialColumnException(
+      SpecialColumnException ex, WebRequest request) {
 
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", OffsetDateTime.now());
-    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
     body.put("error", "Bad Request");
     body.put("message", ex.getMessage());
 
-    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(ColumnContainsCardException.class)
   public ResponseEntity<Object> handleColumnContainsCardException(
-      Exception ex, WebRequest request) {
+      ColumnContainsCardException ex, WebRequest request) {
 
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", OffsetDateTime.now());
-    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("status", HttpStatus.UNPROCESSABLE_ENTITY.value());
     body.put("error", "Bad Request");
     body.put("message", ex.getMessage());
 
-    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler(SpecialColumnDeletionException.class)
   public ResponseEntity<Object> handleSpecialColumnDeletionException(
-      Exception ex, WebRequest request) {
+      SpecialColumnDeletionException ex, WebRequest request) {
 
     Map<String, Object> body = new LinkedHashMap<>();
     body.put("timestamp", OffsetDateTime.now());
-    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("status", HttpStatus.BAD_REQUEST.value());
     body.put("error", "Bad Request");
     body.put("message", ex.getMessage());
 
-    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 }
