@@ -46,4 +46,79 @@ public class GlobalExceptionHandler {
 
     return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
   }
+
+  @ExceptionHandler(BlockedCardException.class)
+  public ResponseEntity<Object> handleBlockedCardException(Exception ex, WebRequest request) {
+
+    Map<String, Object> body = new LinkedHashMap<>();
+    body.put("timestamp", OffsetDateTime.now());
+    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("error", "Bad Request");
+    body.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(CardAlreadyBlockedException.class)
+  public ResponseEntity<Object> handleCardAlreadyBlockedException(
+      Exception ex, WebRequest request) {
+
+    Map<String, Object> body = new LinkedHashMap<>();
+    body.put("timestamp", OffsetDateTime.now());
+    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("error", "Bad Request");
+    body.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(CardNotBlockedException.class)
+  public ResponseEntity<Object> handleCardNotBlockedException(Exception ex, WebRequest request) {
+
+    Map<String, Object> body = new LinkedHashMap<>();
+    body.put("timestamp", OffsetDateTime.now());
+    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("error", "Bad Request");
+    body.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(SpecialColumnException.class)
+  public ResponseEntity<Object> handleSpecialColumnException(Exception ex, WebRequest request) {
+
+    Map<String, Object> body = new LinkedHashMap<>();
+    body.put("timestamp", OffsetDateTime.now());
+    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("error", "Bad Request");
+    body.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(ColumnContainsCardException.class)
+  public ResponseEntity<Object> handleColumnContainsCardException(
+      Exception ex, WebRequest request) {
+
+    Map<String, Object> body = new LinkedHashMap<>();
+    body.put("timestamp", OffsetDateTime.now());
+    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("error", "Bad Request");
+    body.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(SpecialColumnDeletionException.class)
+  public ResponseEntity<Object> handleSpecialColumnDeletionException(
+      Exception ex, WebRequest request) {
+
+    Map<String, Object> body = new LinkedHashMap<>();
+    body.put("timestamp", OffsetDateTime.now());
+    body.put("status", HttpStatus.NOT_FOUND.value());
+    body.put("error", "Bad Request");
+    body.put("message", ex.getMessage());
+
+    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }
