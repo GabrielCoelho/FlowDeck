@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.model.Board;
 import br.com.devcoelho.taskboard.model.BoardColumn;
 import br.com.devcoelho.taskboard.model.BoardColumnKind;
@@ -24,7 +25,7 @@ public class BoardService {
   public Board findById(Long id) {
     return boardRepository
         .findById(id)
-        .orElseThrow(() -> new RuntimeException("Board not found with this ID: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("Board", id));
   }
 
   @Transactional

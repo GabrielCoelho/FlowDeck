@@ -1,5 +1,7 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.exception.CardAlreadyBlockedException;
+import br.com.devcoelho.taskboard.exception.CardNotBlockedException;
 import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.model.Block;
 import br.com.devcoelho.taskboard.model.Card;
@@ -40,14 +42,14 @@ public class BlockService {
   public Block blockCard(Long cardId, String reason) {
     // Verifica se o card já está bloqueado
     if (isCardBlocked(cardId)) {
-      throw new RuntimeException("Card is already blocked");
+      throw new CardAlreadyBlockedException(cardId);
     }
 
     // Busca o card
     Card card =
         cardRepository
             .findById(cardId)
-            .orElseThrow(() -> new ResourceNotFoundException("Card not found with id: ", cardId));
+            .orElseThrow(() -> new ResourceNotFoundException("Card", cardId));
 
     // Cria o bloqueio
     Block block =
@@ -63,7 +65,7 @@ public class BlockService {
     Block block =
         blockRepository
             .findActiveBlockByCardId(cardId)
-            .orElseThrow(() -> new RuntimeException("Card is not blocked"));
+            .orElseThrow(() -> new CardNotBlockedException(cardId));
 
     // Atualiza o bloqueio
     block.setUnblockedAt(OffsetDateTime.now());

@@ -12,7 +12,7 @@ public class ResourceNotFoundException extends FlowDeckException {
   }
 
   private static String formatMessage(String resourceType, Object resourceId) {
-    return resourceType + " wasn't found with ID: " + resourceId;
+    return resourceType + " not found with ID: " + resourceId;
   }
 
   public String getResourceType() {

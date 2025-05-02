@@ -1,6 +1,8 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.exception.ColumnContainsCardException;
 import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
+import br.com.devcoelho.taskboard.exception.SpecialColumnException;
 import br.com.devcoelho.taskboard.model.Board;
 import br.com.devcoelho.taskboard.model.BoardColumn;
 import br.com.devcoelho.taskboard.model.BoardColumnKind;
@@ -27,7 +29,7 @@ public class BoardColumnService {
   public BoardColumn findById(Long id) {
     return boardColumnRepository
         .findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("BoardColumn not found with id: ", id));
+        .orElseThrow(() -> new ResourceNotFoundException("Board Column", id));
   }
 
   /** Cria uma nova coluna em um board */
@@ -36,7 +38,7 @@ public class BoardColumnService {
     Board board =
         boardRepository
             .findById(boardId)
-            .orElseThrow(() -> new RuntimeException("Board wasn't found with the provided ID"));
+            .orElseThrow(() -> new ResourceNotFoundException("Board", boardId));
 
     boardColumn.setBoard(board);
 
@@ -46,10 +48,7 @@ public class BoardColumnService {
           .findByBoardIdAndKind(boardColumn.getBoard().getId(), boardColumn.getKind())
           .ifPresent(
               existingColumn -> {
-                throw new RuntimeException(
-                    "A column with kind "
-                        + boardColumn.getKind()
-                        + " already exists in this board");
+                throw new SpecialColumnException(boardColumn.getKind(), boardColumn.getId());
               });
     }
 
@@ -77,10 +76,7 @@ public class BoardColumnService {
           .findByBoardIdAndKind(column.getBoard().getId(), columnDetails.getKind())
           .ifPresent(
               existingColumn -> {
-                throw new RuntimeException(
-                    "A column with kind "
-                        + columnDetails.getKind()
-                        + " already exists in this board");
+                throw new SpecialColumnException(columnDetails.getKind(), columnDetails.getId());
               });
 
       column.setKind(columnDetails.getKind());
@@ -124,7 +120,7 @@ public class BoardColumnService {
 
     // Verifica se a coluna não tem cards
     if (!column.getCards().isEmpty()) {
-      throw new RuntimeException("Cannot delete a column that contains cards");
+      throw new ColumnContainsCardException(column.getId());
     }
 
     boardColumnRepository.deleteById(id);

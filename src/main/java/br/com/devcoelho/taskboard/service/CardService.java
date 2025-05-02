@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.exception.BlockedCardException;
 import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.model.Board;
 import br.com.devcoelho.taskboard.model.BoardColumn;
@@ -32,9 +33,7 @@ public class CardService {
 
   /** Busca um card pelo ID */
   public Card findById(Long id) {
-    return cardRepository
-        .findById(id)
-        .orElseThrow(() -> new RuntimeException("Card not found with id: " + id));
+    return cardRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Card", id));
   }
 
   /** Cria um novo card na coluna inicial do board */
@@ -44,7 +43,7 @@ public class CardService {
     Board board =
         boardColumnRepository
             .findById(boardId)
-            .orElseThrow(() -> new ResourceNotFoundException("Board not found: ", boardId))
+            .orElseThrow(() -> new ResourceNotFoundException("Board", boardId))
             .getBoard();
 
     BoardColumn initialColumn = board.getInitialColumn();
@@ -76,12 +75,11 @@ public class CardService {
     BoardColumn targetColumn =
         boardColumnRepository
             .findById(targetColumnId)
-            .orElseThrow(
-                () -> new RuntimeException("Target column not found with id: " + targetColumnId));
+            .orElseThrow(() -> new ResourceNotFoundException("Target column", targetColumnId));
 
     // Verifica se o card está bloqueado
     if (card.isBlocked()) {
-      throw new RuntimeException("Cannot move a blocked card");
+      throw new BlockedCardException(card.getId());
     }
 
     // Move o card para a nova coluna
