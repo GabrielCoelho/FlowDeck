@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.dao.BoardColumnDAO;
 import br.com.devcoelho.taskboard.exception.ColumnContainsCardException;
 import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.exception.SpecialColumnDeletionException;
@@ -20,6 +21,7 @@ public class BoardColumnService {
 
   private final BoardColumnRepository boardColumnRepository;
   private final BoardRepository boardRepository;
+  private final BoardColumnDAO boardColumnDAO;
 
   /** Busca todas as colunas de um board ordenadas */
   public List<BoardColumn> findByBoardId(Long boardId) {
@@ -125,5 +127,28 @@ public class BoardColumnService {
     }
 
     boardColumnRepository.deleteById(id);
+  }
+
+  /** Busca colunas vazias (sem cards) de um determinado board. */
+  public List<BoardColumn> findEmptyColumns(Long boardId) {
+    return boardColumnDAO.findEmptyColumns(boardId);
+  }
+
+  /** Encontra a coluna mais populosa (com mais cards) de um board. */
+  public BoardColumn findMostPopulatedColumn(Long boardId) {
+    return boardColumnDAO
+        .findMostPopulatedColumn(boardId)
+        .orElseThrow(() -> new ResourceNotFoundException("Board", boardId));
+  }
+
+  /** Encontra colunas com cards bloqueados em um board. */
+  public List<BoardColumn> findColumnsWithBlockedCards(Long boardId) {
+    return boardColumnDAO.findColumnsWithBlockedCards(boardId);
+  }
+
+  /** Reorganiza as ordens das colunas em um board para eliminar lacunas. */
+  @Transactional
+  public List<BoardColumn> normalizeColumnOrders(Long boardId) {
+    return boardColumnDAO.normalizeColumnOrders(boardId);
   }
 }

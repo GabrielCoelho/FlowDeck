@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.dao.BoardDAO;
 import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.model.Board;
 import br.com.devcoelho.taskboard.model.BoardColumn;
@@ -17,6 +18,7 @@ public class BoardService {
 
   private final BoardRepository boardRepository;
   private final BoardColumnRepository boardColumnRepository;
+  private final BoardDAO boardDAO;
 
   public List<Board> findAll() {
     return boardRepository.findAll();
@@ -90,5 +92,49 @@ public class BoardService {
 
     boardColumnRepository.saveAll(
         List.of(initialColumn, todoColumn, inProgressColumn, doneColumn, canceledColumn));
+  }
+
+  /**
+   * Busca board com todas as relações carregadas. Utiliza o DAO para executar a consulta otimizada.
+   *
+   * @param id identificador do board
+   * @return o board com todas as relações
+   * @throws ResourceNotFoundException se o board não for encontrado
+   */
+  public Board findByIdWithAllRelations(Long id) {
+    return boardDAO
+        .findByIdWithAllRelations(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Board", id));
+  }
+
+  /**
+   * Busca os boards mais ativos com base na quantidade de cards.
+   *
+   * @param limit número máximo de boards a retornar
+   * @return lista de boards mais ativos
+   */
+  public List<Board> findMostActiveBoards(int limit) {
+    return boardDAO.findMostActiveBoards(limit);
+  }
+
+  /**
+   * Busca boards pelo nome contendo o texto e pela quantidade mínima de colunas.
+   *
+   * @param name parte do nome a ser buscada
+   * @param minColumns número mínimo de colunas que o board deve ter
+   * @return lista de boards que atendem aos critérios
+   */
+  public List<Board> findByNameAndMinColumns(String name, int minColumns) {
+    return boardDAO.findByNameAndMinColumns(name, minColumns);
+  }
+
+  /**
+   * Conta o número total de cards em um board.
+   *
+   * @param boardId identificador do board
+   * @return número total de cards
+   */
+  public int countTotalCards(Long boardId) {
+    return boardDAO.countTotalCards(boardId);
   }
 }

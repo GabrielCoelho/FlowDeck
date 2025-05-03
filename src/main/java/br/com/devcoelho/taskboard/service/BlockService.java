@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.dao.BlockDAO;
 import br.com.devcoelho.taskboard.exception.CardAlreadyBlockedException;
 import br.com.devcoelho.taskboard.exception.CardNotBlockedException;
 import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
@@ -19,6 +20,7 @@ public class BlockService {
 
   private final BlockRepository blockRepository;
   private final CardRepository cardRepository;
+  private final BlockDAO blockDAO;
 
   /** Busca todos os bloqueios de um card */
   public List<Block> findByCardId(Long cardId) {
@@ -72,5 +74,26 @@ public class BlockService {
     block.setUnblockReason(reason);
 
     return blockRepository.save(block);
+  }
+
+  /** Busca bloqueios por período. */
+  public List<Block> findByDateRange(
+      OffsetDateTime startDate, OffsetDateTime endDate, boolean activeOnly) {
+    return blockDAO.findByDateRange(startDate, endDate, activeOnly);
+  }
+
+  /** Busca motivos mais comuns de bloqueio. */
+  public Map<String, Long> findMostCommonBlockReasons(int limit) {
+    return blockDAO.findMostCommonBlockReasons(limit);
+  }
+
+  /** Calcula a duração média de bloqueios por board. */
+  public Map<Long, Double> calculateAverageBlockDurationByBoard() {
+    return blockDAO.calculateAverageBlockDurationByBoard();
+  }
+
+  /** Busca bloqueios de longa duração. */
+  public List<Block> findLongDurationBlocks(int hours) {
+    return blockDAO.findLongDurationBlocks(hours);
   }
 }

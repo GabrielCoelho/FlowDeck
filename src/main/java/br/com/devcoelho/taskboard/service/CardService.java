@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.service;
 
+import br.com.devcoelho.taskboard.dao.CardDAO;
 import br.com.devcoelho.taskboard.exception.BlockedCardException;
 import br.com.devcoelho.taskboard.exception.ResourceNotFoundException;
 import br.com.devcoelho.taskboard.model.Board;
@@ -9,6 +10,7 @@ import br.com.devcoelho.taskboard.repository.BoardColumnRepository;
 import br.com.devcoelho.taskboard.repository.CardRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ public class CardService {
   private final CardRepository cardRepository;
   private final BoardColumnRepository boardColumnRepository;
   private final BlockService blockService;
+  private final CardDAO cardDAO;
 
   /** Busca todos os cards de uma coluna */
   public List<Card> findByBoardColumnId(Long boardColumnId) {
@@ -111,5 +114,26 @@ public class CardService {
     card.setUpdatedAt(OffsetDateTime.now());
 
     return cardRepository.save(card);
+  }
+
+  /** Busca cards por período e status de bloqueio. */
+  public List<Card> findByDateRangeAndBlockStatus(
+      OffsetDateTime startDate, OffsetDateTime endDate, boolean blocked) {
+    return cardDAO.findByDateRangeAndBlockStatus(startDate, endDate, blocked);
+  }
+
+  /** Obtém estatísticas de cards por coluna em um board específico. */
+  public Map<String, Integer> getCardStatsByColumn(Long boardId) {
+    return cardDAO.getCardStatsByColumn(boardId);
+  }
+
+  /** Busca cards com mais histórico de bloqueios. */
+  public List<Card> findMostBlockedCards(int limit) {
+    return cardDAO.findMostBlockedCards(limit);
+  }
+
+  /** Busca cards que estão há mais tempo em uma determinada coluna. */
+  public List<Card> findOldestCardsInColumn(Long columnId, int limit) {
+    return cardDAO.findOldestCardsInColumn(columnId, limit);
   }
 }
