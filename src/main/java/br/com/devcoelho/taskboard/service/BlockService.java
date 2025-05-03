@@ -10,6 +10,7 @@ import br.com.devcoelho.taskboard.repository.BlockRepository;
 import br.com.devcoelho.taskboard.repository.CardRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

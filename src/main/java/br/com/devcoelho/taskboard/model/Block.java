@@ -1,25 +1,39 @@
 package br.com.devcoelho.taskboard.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Represents a block (impediment) for a card in the taskboard system. A block prevents a card from
- * being moved until it's unblocked.
- */
+@Entity
+@Table(name = "block")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Block {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private OffsetDateTime blockedAt;
+
   private String blockReason;
+
   private OffsetDateTime unblockedAt;
+
   private String unblockReason;
+
+  @ManyToOne
+  @JoinColumn(name = "card_id")
   private Card card;
 }

@@ -3,6 +3,13 @@ package br.com.devcoelho.taskboard.model;
 import static br.com.devcoelho.taskboard.model.BoardColumnKind.CANCEL;
 import static br.com.devcoelho.taskboard.model.BoardColumnKind.INITIAL;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -13,20 +20,24 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/**
- * Represents a board in the taskboard system. A board contains columns that represent different
- * stages of a workflow.
- */
+@Entity
+@Table(name = "board")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Board {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String name;
 
-  @ToString.Exclude @EqualsAndHashCode.Exclude @Builder.Default
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @Builder.Default
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
   private List<BoardColumn> columns = new ArrayList<>();
 
   /**

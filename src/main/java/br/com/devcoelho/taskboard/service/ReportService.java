@@ -5,6 +5,7 @@ import br.com.devcoelho.taskboard.dao.BoardDAO;
 import br.com.devcoelho.taskboard.dao.CardDAO;
 import br.com.devcoelho.taskboard.model.Block;
 import br.com.devcoelho.taskboard.model.Board;
+import br.com.devcoelho.taskboard.model.BoardColumn;
 import br.com.devcoelho.taskboard.model.Card;
 import java.time.OffsetDateTime;
 import java.util.HashMap;

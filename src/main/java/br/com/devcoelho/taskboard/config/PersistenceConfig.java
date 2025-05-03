@@ -42,7 +42,7 @@ public class PersistenceConfig {
     dataSource.setUrl(env.getProperty("spring.datasource.url"));
     dataSource.setUsername(env.getProperty("spring.datasource.username"));
     dataSource.setPassword(env.getProperty("spring.datasource.password"));
-    dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+    dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
     return dataSource;
   }
 
