@@ -1,5 +1,7 @@
 package br.com.devcoelho.taskboard.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,10 +38,12 @@ public class Card {
   @ManyToOne
   @JoinColumn(name = "board_column_id")
   @Builder.Default
+  @JsonBackReference("column-cards")
   private BoardColumn boardColumn = new BoardColumn();
 
   @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
   @Builder.Default
+  @JsonManagedReference("card-blocks")
   private List<Block> blocks = new ArrayList<>();
 
   @Builder.Default private OffsetDateTime createdAt = OffsetDateTime.now();

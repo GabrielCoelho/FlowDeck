@@ -1,7 +1,12 @@
 package br.com.devcoelho.taskboard.controller;
 
+import br.com.devcoelho.taskboard.dto.BlockDTO;
+import br.com.devcoelho.taskboard.dto.mappers.BlockMapper;
+import br.com.devcoelho.taskboard.dto.request.BlockCardRequest;
+import br.com.devcoelho.taskboard.dto.request.UnblockCardRequest;
 import br.com.devcoelho.taskboard.model.Block;
 import br.com.devcoelho.taskboard.service.BlockService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 public class BlockController {
 
   private final BlockService blockService;
+  private final BlockMapper blockMapper;
 
   @GetMapping
-  public ResponseEntity<List<Block>> getBlocksByCardId(@PathVariable Long cardId) {
-    return ResponseEntity.ok(blockService.findByCardId(cardId));
+  public ResponseEntity<List<BlockDTO>> getBlocksByCardId(@PathVariable Long cardId) {
+    List<Block> blocks = blockService.findByCardId(cardId);
+    return ResponseEntity.ok(blockMapper.toDtoList(blocks));
   }
 
   @GetMapping("/status")
@@ -28,16 +35,18 @@ public class BlockController {
   }
 
   @PostMapping
-  public ResponseEntity<Block> blockCard(
-      @PathVariable Long cardId, @RequestBody Map<String, String> payload) {
-    String reason = payload.getOrDefault("reason", "No reason provided");
-    return new ResponseEntity<>(blockService.blockCard(cardId, reason), HttpStatus.CREATED);
+  public ResponseEntity<BlockDTO> blockCard(
+      @PathVariable Long cardId, @Valid @RequestBody BlockCardRequest request) {
+
+    Block block = blockService.blockCard(cardId, request.getReason());
+    return new ResponseEntity<>(blockMapper.toDto(block), HttpStatus.CREATED);
   }
 
   @PostMapping("/unblock")
-  public ResponseEntity<Block> unblockCard(
-      @PathVariable Long cardId, @RequestBody Map<String, String> payload) {
-    String reason = payload.getOrDefault("reason", "No reason provided");
-    return ResponseEntity.ok(blockService.unblockCard(cardId, reason));
+  public ResponseEntity<BlockDTO> unblockCard(
+      @PathVariable Long cardId, @Valid @RequestBody UnblockCardRequest request) {
+
+    Block block = blockService.unblockCard(cardId, request.getReason());
+    return ResponseEntity.ok(blockMapper.toDto(block));
   }
 }

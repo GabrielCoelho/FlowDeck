@@ -1,5 +1,6 @@
 package br.com.devcoelho.taskboard.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,5 +36,6 @@ public class Block {
 
   @ManyToOne
   @JoinColumn(name = "card_id")
+  @JsonBackReference("card-blocks")
   private Card card;
 }

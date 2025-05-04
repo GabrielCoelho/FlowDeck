@@ -3,6 +3,7 @@ package br.com.devcoelho.taskboard.model;
 import static br.com.devcoelho.taskboard.model.BoardColumnKind.CANCEL;
 import static br.com.devcoelho.taskboard.model.BoardColumnKind.INITIAL;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +39,7 @@ public class Board {
   @EqualsAndHashCode.Exclude
   @Builder.Default
   @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+  @JsonManagedReference("board-columns")
   private List<BoardColumn> columns = new ArrayList<>();
 
   /**
